@@ -1,0 +1,185 @@
+drop table if exists ANEXOS;
+
+drop table if exists CATEGORIA;
+
+drop table if exists CLIENTE;
+
+drop table if exists GRUPO;
+
+drop table if exists GRUPO_CLIENTE;
+
+drop table if exists PERFIL;
+
+drop table if exists SUBCATEGORIA;
+
+drop table if exists TAREFAS;
+
+drop table if exists TAREFAS_ANEXOS;
+
+drop table if exists TAREFA_ANEXO;
+
+drop table if exists TAREFA_CLIENTE;
+
+/*==============================================================*/
+/* Table: ANEXOS                                                */
+/*==============================================================*/
+create table ANEXOS
+(
+   ANEXO_ID             int not null,
+   ANEXO_DOCUMENTO      longblob not null,
+   ANEXO_DATACRIACAO    datetime not null,
+   primary key (ANEXO_ID)
+);
+
+/*==============================================================*/
+/* Table: CATEGORIA                                             */
+/*==============================================================*/
+create table CATEGORIA
+(
+   CATEGORIA_ID         int not null,
+   CATEGORIA_DESCRICAO  varchar(80) not null,
+   CATEGORIA_DATACRIACAO datetime not null,
+   primary key (CATEGORIA_ID)
+);
+
+/*==============================================================*/
+/* Table: CLIENTE                                               */
+/*==============================================================*/
+create table CLIENTE
+(
+   CLIENTE_ID           int not null,
+   PERFIL_ID            int not null,
+   CLIENTE_NOME         varchar(80) not null,
+   CLIENTE_STATUS       char(1) not null,
+   CLIENTE_SENHA        varchar(20) not null,
+   CLIENTE_DATACRIACAO  datetime not null,
+   primary key (CLIENTE_ID)
+);
+
+/*==============================================================*/
+/* Table: GRUPO                                                 */
+/*==============================================================*/
+create table GRUPO
+(
+   GRUPO_ID             int not null,
+   CATEGORIA_ID         int not null,
+   GRUPO_DESCRICAO      varchar(60) not null,
+   primary key (GRUPO_ID)
+);
+
+/*==============================================================*/
+/* Table: GRUPO_CLIENTE                                         */
+/*==============================================================*/
+create table GRUPO_CLIENTE
+(
+   GRUPO_ID             int not null,
+   CLIENTE_ID           int not null,
+   primary key (GRUPO_ID, CLIENTE_ID)
+);
+
+/*==============================================================*/
+/* Table: PERFIL                                                */
+/*==============================================================*/
+create table PERFIL
+(
+   PERFIL_ID            int not null,
+   PERFIL_FOTO          longblob not null,
+   primary key (PERFIL_ID)
+);
+
+/*==============================================================*/
+/* Table: SUBCATEGORIA                                          */
+/*==============================================================*/
+create table SUBCATEGORIA
+(
+   SUBCATEGORIA_ID      int not null,
+   CATEGORIA_ID         int not null,
+   SUBCATEGORIA_DESCRICAO varchar(80),
+   SUBCATEGORIA_DATACRIACAO datetime,
+   primary key (SUBCATEGORIA_ID)
+);
+
+/*==============================================================*/
+/* Table: TAREFAS                                               */
+/*==============================================================*/
+create table TAREFAS
+(
+   TAREFAS_ID           int not null,
+   SUBCATEGORIA_ID      int not null,
+   TAREFAS_DESCRICAO    varchar(30) not null,
+   TAREFAS_DATA         date not null,
+   TAREFAS_DATACRIACAO  datetime not null,
+   TAREFAS_HORALIMITE   time not null,
+   TAREFAS_TITULO       varchar(20) not null,
+   primary key (TAREFAS_ID)
+);
+
+/*==============================================================*/
+/* Table: TAREFAS_ANEXOS                                        */
+/*==============================================================*/
+create table TAREFAS_ANEXOS
+(
+   TAREFAS_ID           int not null,
+   ANEXO_ID             int not null,
+   primary key (TAREFAS_ID, ANEXO_ID)
+);
+
+/*==============================================================*/
+/* Table: TAREFA_ANEXO                                          */
+/*==============================================================*/
+create table TAREFA_ANEXO
+(
+   TARCLI_ID            int not null,
+   ANEXO_ID             int not null,
+   primary key (TARCLI_ID, ANEXO_ID)
+);
+
+/*==============================================================*/
+/* Table: TAREFA_CLIENTE                                        */
+/*==============================================================*/
+create table TAREFA_CLIENTE
+(
+   TARCLI_ID            int not null,
+   CLIENTE_ID           int not null,
+   TAREFAS_ID           int not null,
+   TARCLI_STATUS        varchar(15) not null,
+   TARCLI_DATAENVIO     date,
+   TARCLI_OBS           varchar(100) not null,
+   primary key (TARCLI_ID)
+);
+
+alter table CLIENTE add constraint FK_CLIENTE_PERFIL foreign key (PERFIL_ID)
+      references PERFIL (PERFIL_ID) on delete restrict on update restrict;
+
+alter table GRUPO add constraint FK_GRUPO_CATEGORIA foreign key (CATEGORIA_ID)
+      references CATEGORIA (CATEGORIA_ID) on delete restrict on update restrict;
+
+alter table GRUPO_CLIENTE add constraint FK_GRUPO_CLIENTE foreign key (GRUPO_ID)
+      references GRUPO (GRUPO_ID) on delete restrict on update restrict;
+
+alter table GRUPO_CLIENTE add constraint FK_GRUPO_CLIENTE2 foreign key (CLIENTE_ID)
+      references CLIENTE (CLIENTE_ID) on delete restrict on update restrict;
+
+alter table SUBCATEGORIA add constraint FK_CATEGORIA_SUBCATEGORIA foreign key (CATEGORIA_ID)
+      references CATEGORIA (CATEGORIA_ID) on delete restrict on update restrict;
+
+alter table TAREFAS add constraint FK_CATEGORIA_TAREFAS foreign key (SUBCATEGORIA_ID)
+      references SUBCATEGORIA (SUBCATEGORIA_ID) on delete restrict on update restrict;
+
+alter table TAREFAS_ANEXOS add constraint FK_TAREFAS_ANEXOS foreign key (TAREFAS_ID)
+      references TAREFAS (TAREFAS_ID) on delete restrict on update restrict;
+
+alter table TAREFAS_ANEXOS add constraint FK_TAREFAS_ANEXOS2 foreign key (ANEXO_ID)
+      references ANEXOS (ANEXO_ID) on delete restrict on update restrict;
+
+alter table TAREFA_ANEXO add constraint FK_TAREFA_ANEXO foreign key (TARCLI_ID)
+      references TAREFA_CLIENTE (TARCLI_ID) on delete restrict on update restrict;
+
+alter table TAREFA_ANEXO add constraint FK_TAREFA_ANEXO2 foreign key (ANEXO_ID)
+      references ANEXOS (ANEXO_ID) on delete restrict on update restrict;
+
+alter table TAREFA_CLIENTE add constraint FK_CLIENTE_TAREFA foreign key (CLIENTE_ID)
+      references CLIENTE (CLIENTE_ID) on delete restrict on update restrict;
+
+alter table TAREFA_CLIENTE add constraint FK_TAREFA_CLIENTE foreign key (TAREFAS_ID)
+      references TAREFAS (TAREFAS_ID) on delete restrict on update restrict;
