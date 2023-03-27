@@ -1,0 +1,26 @@
+
+<div class="card">
+    <div class="card-body">
+        <form class="form-horizontal" [formGroup]="cForm">
+            <div class="form-group">
+                <div class="col-12">
+                    <label class="control-label" for="categoria">Nova Categoria/Existente</label>
+                </div>
+                <div class="col-12" formGroupName="categoria">
+                    <input class="form-control" type="text" id="categoria" formControlName="descricao">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-12">
+                    <label class="control-label" for="subCategoria">subCategoria(Obrigatorio)</label>
+                </div>
+                <div class="col-12">
+                    <input class="form-control" type="text" id="subCategoria" formControlName="descricao">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" (click)="criarCategoria()">Criar Categoria</button>
+        </form>
+    </div>
+</div>

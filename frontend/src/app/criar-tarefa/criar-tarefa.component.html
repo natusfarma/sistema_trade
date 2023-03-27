@@ -1,0 +1,100 @@
+<form class="form-horizontal" [formGroup]="formulario">
+
+    <div class="form-group col-12 col-sm-12">
+        <label class="control-label" for="titulo">Titulo</label>
+        <input class="form-control" type="text" id="titulo" formControlName="titulo">
+    </div>
+
+    <div class="form-group col-12 col-sm-12">
+        <label class="control-label" for="descricao">Descricao</label>
+        <input class="form-control" type="text" id="descricao" formControlName="descricao">
+    </div>
+
+    <div class="form-group col-12 col-sm-6">
+
+        <div>
+            <label class="control-label" for="Filiais">Selecionar Filiais</label>
+        </div>
+
+        <div class="form-control select-input">
+            <div class="row">
+
+                <div class="col-12">
+                    <input type="checkbox" name="selecionarTodos" class="form-check-input" id="selecionarTodos"
+                        [checked]="todosSelect" (change)="selecionarTodos()">
+                    <label class="form-check-label" for="selecionarTodos">Selecionar todos</label>
+                </div>
+
+                <div class="row">
+                    <div class="col-3 col-lg-2" *ngFor="let f of listaFiliais">
+                        <input class="form-check-input" type="checkbox" [value]="f.id" [id]="'filial_'+f.id"
+                            [checked]="f.checkboxvalue" (change)="mudarCheck(f)" />
+                        <label class="form-check-label" [for]="'filial_'+f.id">{{ f.nome }}</label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="form-group col-4 col-sm-2">
+            <label class="control-label" for="categoria">Categoria</label>
+            <input class="form-control" type="search" id="categoria">
+        </div>
+
+        <div class="form-group col-4 col-sm-2" formGroupName="subCategoriaId">
+            <label class="control-label" for="subCategoria">SubCategoria</label>
+            <!-- select + opt = list subcategoria  -->
+
+            <input data-provide="typeahead" list="subecategoria" name="subecategorias" class="form-control" type="text"
+                id="subCategoria" formControlName="id">
+
+        </div>
+
+        <datalist id="subecategorias">
+            <option *ngFor="let subecategoria of subecategorias" [value]="subecategoria.id">
+                {{subecategoria.descricao}} </option>
+        </datalist>
+
+        <div class="form-group col-4 col-sm-2">
+            <div>
+                <label class="control-label" for="BotaoCategoria">Criar Nova</label>
+            </div>
+            <button class="btn btn-secondary" id="BotaoCategoria" (click)="mostrarCategoria()">Categoria/Sub</button>
+        </div>
+
+    </div>
+
+    <div class="col-12 col-sm-4" *ngIf="mostrarcategoria" style="display: block;">
+        <app-criar-categoria [mostrarCategoria]="mostrarcategoria"></app-criar-categoria>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-4 col-sm-2">
+            <label class="control-label" for="dataTarefa" onkeydown="return false">dataTarefa</label>
+            <input class="form-control" type="date" id="dataTarefa" formControlName="dataTarefa">
+        </div>
+
+        <div class="form-group col-4 col-sm-2">
+            <label class="control-label" for="horaLimite">horaLimite</label>
+            <input class="form-control" type="time" id="horaLimite" formControlName="horaLimite">
+        </div>
+    </div>
+
+    <div class="form-group">
+
+        <div class="col-8 col-sm-8">
+
+
+            <label for="anexo">
+                Escolher Imagem
+            </label>
+
+            <input type="file" accept="image/*" id="anexos" multiple>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Criar Tarefa</button>
+</form>

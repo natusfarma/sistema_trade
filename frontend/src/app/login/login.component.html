@@ -1,0 +1,15 @@
+
+<div class="row">
+  <div class="container col-8 col-sm-8 col-md-6 col-lg-5" style="margin-top: 13%;">
+    <div class="mb-3 ">
+      <label for="Usuario" class="form-label">Usuario</label>
+      <input type="text" class="form-control" id="Usuario" [(ngModel)]="usuario.nome">
+    </div>
+    <div class="mb-3 ">
+      <label for="Password" class="form-label">Senha</label>
+      <input type="password" class="form-control" id="Password" [(ngModel)]="usuario.senha">
+    </div>
+    <a>Registrar </a>  
+    <button type="submit" class="btn btn-primary" (click)="fazerLogin()">Entrar</button>
+  </div>      
+</div>
