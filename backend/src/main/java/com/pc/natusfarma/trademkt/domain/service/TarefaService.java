@@ -1,6 +1,7 @@
 package com.pc.natusfarma.trademkt.domain.service;
 
 import com.pc.natusfarma.trademkt.domain.exception.TarefaNaoEncontradaException;
+import com.pc.natusfarma.trademkt.domain.model.Cliente;
 import com.pc.natusfarma.trademkt.domain.model.Subcategoria;
 import com.pc.natusfarma.trademkt.domain.model.Tarefa;
 import com.pc.natusfarma.trademkt.domain.model.TarefaCliente;
@@ -37,18 +38,17 @@ public class TarefaService {
 
     @Transactional
     public Tarefa salvar(TarefaServiceInput tarefaServiceInput){
-        System.out.println(">>>>tarefaServiceInput "+tarefaServiceInput);
         Tarefa tarefa = toModel(tarefaServiceInput);
 
-        System.out.println(">>>>tarefa "+tarefa);
         Tarefa finalTarefa = tarefaRepository.save(tarefa);
-        System.out.println(">>>>tarefa "+tarefa);
 
         List<TarefaCliente> tarefaClientes = tarefaServiceInput.getClientes()
                 .stream()
                 .map((e) -> {
                     TarefaCliente tarefaCliente = new TarefaCliente();
-                    tarefaCliente.setId(e.getId());
+                    Cliente cliente = new Cliente();
+                    cliente.setId(e.getId());
+                    tarefaCliente.setCliente(cliente);
                     tarefaCliente.setTarefa(finalTarefa);
                     return tarefaCliente;
                 })
@@ -78,7 +78,7 @@ public class TarefaService {
         tarefa.setDataTarefa(OffsetDateTime.of(tarefaServiceInput.getDataTarefa().atTime(LocalTime.now()), ZoneOffset.UTC));
         tarefa.setHoraLimite(OffsetTime.of(tarefaServiceInput.getHoraLimite(), ZoneOffset.UTC));
         Subcategoria subcategoria = new Subcategoria();
-        subcategoria.setId(tarefaServiceInput.getId());
+        subcategoria.setId(tarefaServiceInput.getSubcategoriaId().getId());
         tarefa.setSubcategoria(subcategoria);
         tarefa.setAnexos(tarefaServiceInput.getAnexos());
         return tarefa;

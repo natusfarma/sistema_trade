@@ -1,7 +1,10 @@
 package com.pc.natusfarma.trademkt.api.controller;
 
+import com.pc.natusfarma.trademkt.api.assembler.TarefaModelAssembler;
+import com.pc.natusfarma.trademkt.api.model.TarefaInputDisassembler;
 import com.pc.natusfarma.trademkt.api.model.TarefaModel;
 import com.pc.natusfarma.trademkt.api.model.input.TarefaInput;
+import com.pc.natusfarma.trademkt.domain.model.Subcategoria;
 import com.pc.natusfarma.trademkt.domain.model.Tarefa;
 import com.pc.natusfarma.trademkt.domain.repository.SubcategoriaRepository;
 import com.pc.natusfarma.trademkt.domain.repository.TarefaRepository;
@@ -29,7 +32,7 @@ public class TarefaController {
     private SubcategoriaRepository subCategoriaRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private TarefaInputDisassembler tarefaInputDisassembler;
 
 
     @GetMapping
@@ -38,14 +41,14 @@ public class TarefaController {
     }
 
     @GetMapping("/{id}")
-    public TarefaModel buscarPorId(@PathVariable Long id){
-        return toModel(tarefaService.buscarPorId(id));
+    public Tarefa buscarPorId(@PathVariable Long id){
+        return tarefaService.buscarPorId(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Tarefa salvar(@RequestBody TarefaInput tarefaInput){
-        TarefaServiceInput tarefaServiceInput = toModel(tarefaInput);
+        TarefaServiceInput tarefaServiceInput = tarefaInputDisassembler.toModel(tarefaInput);
 
         return tarefaService.salvar(tarefaServiceInput);
     }
@@ -61,24 +64,11 @@ public class TarefaController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long id){
+    public void remover(@PathVariable Long id) {
         tarefaService.excluir(id);
     }
 
-    private TarefaServiceInput toModel(TarefaInput tarefaInput) {
-        TarefaServiceInput tarefaServiceInput = new TarefaServiceInput();
-        tarefaServiceInput.setId(tarefaInput.getId());
-        tarefaServiceInput.setDescricao(tarefaInput.getDescricao());
-        tarefaServiceInput.setTitulo(tarefaInput.getTitulo());
-        tarefaServiceInput.setDataTarefa(tarefaInput.getDataTarefa());
-        tarefaServiceInput.setHoraLimite(tarefaInput.getHoraLimite());
-        tarefaServiceInput.setSubcategoriaId(tarefaInput.getSubcategoriaId());
-        tarefaServiceInput.setAnexos(tarefaInput.getAnexos());
-        tarefaServiceInput.setClientes(tarefaInput.getClientes());
-        return tarefaServiceInput;
-    }
 
-    private TarefaModel toModel(Tarefa tarefa){
-        return modelMapper.map(tarefa, TarefaModel.class);
-    }
+
+
 }

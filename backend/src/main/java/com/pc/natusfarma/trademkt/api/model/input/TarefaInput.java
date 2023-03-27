@@ -83,4 +83,18 @@ public class TarefaInput {
     public void setClientes(List<ClienteIdInput> clientes) {
         this.clientes = clientes;
     }
+
+    @Override
+    public String toString() {
+        return "TarefaInput{" +
+                "id=" + id +
+                ", descricao='" + descricao + '\'' +
+                ", titulo='" + titulo + '\'' +
+                ", dataTarefa=" + dataTarefa +
+                ", horaLimite=" + horaLimite +
+                ", subcategoriaId=" + subcategoriaId +
+                ", anexos=" + anexos +
+                ", clientes=" + clientes +
+                '}';
+    }
 }

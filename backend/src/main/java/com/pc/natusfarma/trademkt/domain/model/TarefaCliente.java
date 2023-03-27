@@ -21,7 +21,6 @@ public class TarefaCliente {
     @Column(name = "tarcli_obs")
     private String obs;
     @ManyToOne
-    //@JoinColumn(name = "cliente_id", nullable = false, updatable = false, insertable = false)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
     @ManyToOne
@@ -91,16 +90,26 @@ public class TarefaCliente {
         this.anexos = anexos;
     }
 
+//    @Override
+//    public String toString() {
+//        return "TarefaCliente{" +
+//                "id=" + id +
+//                ", status='" + status + '\'' +
+//                ", dataEnvio=" + dataEnvio +
+//                ", obs='" + obs + '\'' +
+//                ", cliente=" + cliente +
+//                ", tarefa=" + tarefa +
+//                ", anexos=" + anexos +
+//                '}';
+//    }
+
+
     @Override
     public String toString() {
         return "TarefaCliente{" +
                 "id=" + id +
-                ", status='" + status + '\'' +
-                ", dataEnvio=" + dataEnvio +
-                ", obs='" + obs + '\'' +
                 ", cliente=" + cliente +
                 ", tarefa=" + tarefa +
-                ", anexos=" + anexos +
                 '}';
     }
 }

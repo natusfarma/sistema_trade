@@ -1,5 +1,6 @@
 package com.pc.natusfarma.trademkt.api.controller;
 
+import com.pc.natusfarma.trademkt.api.assembler.ClienteModelAssembler;
 import com.pc.natusfarma.trademkt.api.model.ClienteModel;
 import com.pc.natusfarma.trademkt.domain.model.Cliente;
 import com.pc.natusfarma.trademkt.domain.repository.ClienteRepository;
@@ -23,18 +24,19 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private ClienteModelAssembler clienteModelAssembler;
 
     @GetMapping
     public List<ClienteModel> listar(){
-        return toCollectionModel(clienteRepository.findAll());
+        List<Cliente> clientes = clienteRepository.findAll();
+        return clienteModelAssembler.toCollectionModel(clientes);
     }
 
     @GetMapping("/{id}")
     public ClienteModel buscar(@PathVariable Long id){
         Cliente cliente = clienteService.buscaPorId(id);
 
-        ClienteModel clienteModel = toModel(cliente);
+        ClienteModel clienteModel = clienteModelAssembler.toModel(cliente);
 
         return clienteModel;
     }
@@ -59,20 +61,7 @@ public class ClienteController {
         clienteService.excluir(id);
     }
 
-    private ClienteModel toModel(Cliente cliente) {
-        return modelMapper.map(cliente, ClienteModel.class);
-//        ClienteModel clienteModel = new ClienteModel();
-//        clienteModel.setId(cliente.getId());
-//        clienteModel.setNome(cliente.getNome());
-//        clienteModel.setStatus(cliente.getStatus());
-//        return clienteModel;
-    }
 
-    private List<ClienteModel> toCollectionModel(List<Cliente> clientes){
-        return clientes.stream()
-                .map(cliente -> toModel(cliente))
-                .collect(Collectors.toList());
-    }
 
 
 

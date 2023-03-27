@@ -32,6 +32,11 @@ public class TarefaClienteController {
         return tarefaClienteService.buscarTarefaIdEClienteId(tarefaId, clienteId);
     }
 
+    @GetMapping("/tarefa-id/{tarefaId}")
+    public List<TarefaCliente> buscarTarefaId(@PathVariable Long tarefaId){
+        return tarefaClienteService.buscarTarefaId(tarefaId);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TarefaCliente adicionar(@RequestBody TarefaCliente tarefaCliente){

@@ -30,6 +30,10 @@ public class TarefaClienteService {
                 .orElseThrow(() -> new TarefeClienteNaoEncontradoException(tarefaId, clienteId));
     }
 
+    public List<TarefaCliente> buscarTarefaId(Long tarefaId){
+        return tarefaClienteRepository.findByTarefaId(tarefaId);
+    }
+
     public TarefaCliente buscarPorId(Long id){
         return tarefaClienteRepository.findById(id)
                 .orElseThrow(() -> new TarefeClienteNaoEncontradoException(id));
