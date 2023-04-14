@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class Categoria {
 
     @CreationTimestamp
     @Column(name = "categoria_datacadastro", nullable = false, columnDefinition = "datetime", updatable = false)
-    private OffsetDateTime dataCadastro;
+    private LocalDateTime dataCadastro;
 
     public Long getId() {
         return Id;
@@ -51,11 +52,11 @@ public class Categoria {
         this.subcategorias = subcategorias;
     }
 
-    public OffsetDateTime getDataCadastro() {
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(OffsetDateTime dataCadastro) {
+    public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 

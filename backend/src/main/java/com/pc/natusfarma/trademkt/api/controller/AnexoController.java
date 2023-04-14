@@ -1,12 +1,15 @@
 package com.pc.natusfarma.trademkt.api.controller;
 
+import com.pc.natusfarma.trademkt.api.model.input.UploadInput;
 import com.pc.natusfarma.trademkt.domain.model.Anexo;
+import com.pc.natusfarma.trademkt.domain.model.Perfil;
 import com.pc.natusfarma.trademkt.domain.service.AnexoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,7 +26,15 @@ public class AnexoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Anexo adicionar(@RequestBody Anexo anexo){
+    public Anexo adicionar(UploadInput uploadInput){
+
+        Anexo anexo;
+        try {
+            anexo = criarAnexo(uploadInput);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         return anexoService.salvar(anexo);
     }
 
@@ -48,4 +59,14 @@ public class AnexoController {
         anexoService.excluir(id);
     }
 
+
+    private Anexo criarAnexo(UploadInput uploadInput) throws IOException {
+        Anexo anexo = new Anexo();
+        String nome = uploadInput.getArquivo().getOriginalFilename();
+        nome = nome.substring(nome.indexOf("."));
+        anexo.setExtensao(nome);
+        anexo.setDocumento(uploadInput.getArquivo().getBytes());
+        anexo.setTamanho(uploadInput.getArquivo().getSize());
+        return anexo;
+    }
 }

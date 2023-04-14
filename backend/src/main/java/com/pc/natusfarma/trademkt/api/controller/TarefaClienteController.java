@@ -1,14 +1,17 @@
 package com.pc.natusfarma.trademkt.api.controller;
 
+import com.pc.natusfarma.trademkt.api.assembler.TarefaModelAssembler;
 import com.pc.natusfarma.trademkt.domain.model.TarefaCliente;
 import com.pc.natusfarma.trademkt.domain.repository.TarefaClienteRepository;
 import com.pc.natusfarma.trademkt.domain.service.TarefaClienteService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/tarefas-clientes")
@@ -32,26 +35,53 @@ public class TarefaClienteController {
         return tarefaClienteService.buscarTarefaIdEClienteId(tarefaId, clienteId);
     }
 
-    @GetMapping("/tarefa-id/{tarefaId}")
-    public List<TarefaCliente> buscarTarefaId(@PathVariable Long tarefaId){
+    @GetMapping("/tarefas-id/{tarefaId}")
+    public List<TarefaCliente> buscarTarefasId(@PathVariable Long tarefaId){
         return tarefaClienteService.buscarTarefaId(tarefaId);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public TarefaCliente adicionar(@RequestBody TarefaCliente tarefaCliente){
-        return tarefaClienteService.salvar(tarefaCliente);
+    @GetMapping("/clientes-id/{clienteId}")
+    public List<TarefaCliente> buscarClientesId(@PathVariable Long clienteId){
+        return tarefaClienteService.buscarClienteId(clienteId);
     }
+
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public TarefaCliente adicionar(@RequestBody TarefaCliente tarefaCliente){
+//        return tarefaClienteService.salvar(tarefaCliente);
+//    }
 
 
     @PutMapping("/{id}")
-    public TarefaCliente atualizar(@RequestBody TarefaCliente tarefaCliente, @PathVariable Long id){
+    public ResponseEntity<?> atualizar(@RequestBody TarefaCliente tarefaCliente, @PathVariable Long id){
         TarefaCliente tarefaClienteAtual = tarefaClienteService.buscarPorId(id);
 
         BeanUtils.copyProperties(tarefaCliente, tarefaClienteAtual, "id");
 
-        return tarefaClienteService.salvar(tarefaClienteAtual);
+        TarefaCliente atualizar = tarefaClienteService.salvar(tarefaClienteAtual);
+        return ResponseEntity.ok(atualizar);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable Long id,
+                                    @RequestBody Map<String, Object> campos){
+        TarefaCliente tarefaClienteAtual = tarefaClienteService.buscarPorId(id);
+
+        if (tarefaClienteAtual == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        merge(campos, tarefaClienteAtual);
+
+        return atualizar(tarefaClienteAtual, id);
+    }
+
+    private void merge(Map<String, Object> camposOrigem, TarefaCliente tarefaCliente) {
+        camposOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+            System.out.println(nomePropriedade + " = "+valorPropriedade);
+        });
+    }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

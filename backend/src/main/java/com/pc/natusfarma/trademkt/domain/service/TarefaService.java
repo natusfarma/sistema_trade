@@ -1,5 +1,6 @@
 package com.pc.natusfarma.trademkt.domain.service;
 
+import com.pc.natusfarma.trademkt.api.assembler.TarefaServiceAssembler;
 import com.pc.natusfarma.trademkt.domain.exception.TarefaNaoEncontradaException;
 import com.pc.natusfarma.trademkt.domain.model.Cliente;
 import com.pc.natusfarma.trademkt.domain.model.Subcategoria;
@@ -31,6 +32,9 @@ public class TarefaService {
     @Autowired
     private TarefaClienteService tarefaClienteService;
 
+    @Autowired
+    private TarefaServiceAssembler tarefaServiceAssembler;
+
     public Tarefa buscarPorId(Long id){
         return tarefaRepository.findById(id)
                 .orElseThrow(() -> new TarefaNaoEncontradaException(id));
@@ -38,7 +42,11 @@ public class TarefaService {
 
     @Transactional
     public Tarefa salvar(TarefaServiceInput tarefaServiceInput){
-        Tarefa tarefa = toModel(tarefaServiceInput);
+        Tarefa tarefa = tarefaServiceAssembler.toModel(tarefaServiceInput);
+        Long subcategoriaId = tarefa.getSubcategoria().getId();
+
+        Subcategoria subcategoria = subCategoriaService.buscarPorId(subcategoriaId);
+        tarefa.setSubcategoria(subcategoria);
 
         Tarefa finalTarefa = tarefaRepository.save(tarefa);
 
@@ -50,11 +58,11 @@ public class TarefaService {
                     cliente.setId(e.getId());
                     tarefaCliente.setCliente(cliente);
                     tarefaCliente.setTarefa(finalTarefa);
+                    tarefaCliente.setStatus("PENDENTE");
                     return tarefaCliente;
                 })
                 .collect(Collectors.toList());
 
-        System.out.println(">>>>clientes "+tarefaClientes);
         tarefaClienteService.salvar(tarefaClientes);
 
         return finalTarefa;
@@ -70,17 +78,4 @@ public class TarefaService {
         }
     }
 
-    private Tarefa toModel(TarefaServiceInput tarefaServiceInput) {
-        Tarefa tarefa = new Tarefa();
-        tarefa.setId(tarefaServiceInput.getId());
-        tarefa.setDescricao(tarefaServiceInput.getDescricao());
-        tarefa.setTitulo(tarefaServiceInput.getTitulo());
-        tarefa.setDataTarefa(OffsetDateTime.of(tarefaServiceInput.getDataTarefa().atTime(LocalTime.now()), ZoneOffset.UTC));
-        tarefa.setHoraLimite(OffsetTime.of(tarefaServiceInput.getHoraLimite(), ZoneOffset.UTC));
-        Subcategoria subcategoria = new Subcategoria();
-        subcategoria.setId(tarefaServiceInput.getSubcategoriaId().getId());
-        tarefa.setSubcategoria(subcategoria);
-        tarefa.setAnexos(tarefaServiceInput.getAnexos());
-        return tarefa;
-    }
 }

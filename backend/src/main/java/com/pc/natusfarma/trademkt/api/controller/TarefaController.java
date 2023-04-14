@@ -53,14 +53,14 @@ public class TarefaController {
         return tarefaService.salvar(tarefaServiceInput);
     }
 
-    @PutMapping("/{id}")
-    public Tarefa atualizar(@RequestBody Tarefa tarefa, @PathVariable Long id){
-        Tarefa tarefaAtual = tarefaService.buscarPorId(id);
-
-        BeanUtils.copyProperties(tarefa, tarefaAtual, "id","dataCadastro");
-
-        return tarefaService.salvar(null);
-    }
+//    @PutMapping("/{id}")
+//    public Tarefa atualizar(@RequestBody Tarefa tarefa, @PathVariable Long id){
+//        Tarefa tarefaAtual = tarefaService.buscarPorId(id);
+//
+//        BeanUtils.copyProperties(tarefa, tarefaAtual, "id","dataCadastro");
+//
+//        return tarefaService.salvar(null);
+//    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

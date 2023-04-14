@@ -1,6 +1,7 @@
 package com.pc.natusfarma.trademkt.domain.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class TarefaCliente {
     private String status;
 
     @Column(name = "tarcli_dataenvio", columnDefinition = "datetime")
-    private OffsetDateTime dataEnvio;
+    private LocalDate dataEnvio;
     @Column(name = "tarcli_obs")
     private String obs;
     @ManyToOne
@@ -50,11 +51,11 @@ public class TarefaCliente {
         this.status = status;
     }
 
-    public OffsetDateTime getDataEnvio() {
+    public LocalDate getDataEnvio() {
         return dataEnvio;
     }
 
-    public void setDataEnvio(OffsetDateTime dataEnvio) {
+    public void setDataEnvio(LocalDate dataEnvio) {
         this.dataEnvio = dataEnvio;
     }
 
@@ -89,20 +90,6 @@ public class TarefaCliente {
     public void setAnexos(List<Anexo> anexos) {
         this.anexos = anexos;
     }
-
-//    @Override
-//    public String toString() {
-//        return "TarefaCliente{" +
-//                "id=" + id +
-//                ", status='" + status + '\'' +
-//                ", dataEnvio=" + dataEnvio +
-//                ", obs='" + obs + '\'' +
-//                ", cliente=" + cliente +
-//                ", tarefa=" + tarefa +
-//                ", anexos=" + anexos +
-//                '}';
-//    }
-
 
     @Override
     public String toString() {

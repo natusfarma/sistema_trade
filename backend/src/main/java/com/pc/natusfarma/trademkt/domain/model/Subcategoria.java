@@ -3,6 +3,8 @@ package com.pc.natusfarma.trademkt.domain.model;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -18,7 +20,7 @@ public class Subcategoria {
     private String descricao;
     @CreationTimestamp
     @Column(name =  "subcategoria_datacadastro", nullable = false, columnDefinition = "datetime")
-    private OffsetDateTime dataCadastro;
+    private LocalDateTime dataCadastro;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
@@ -40,11 +42,11 @@ public class Subcategoria {
         this.descricao = descricao;
     }
 
-    public OffsetDateTime getDataCadastro() {
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(OffsetDateTime dataCadastro) {
+    public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 

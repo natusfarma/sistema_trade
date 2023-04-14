@@ -46,7 +46,13 @@ public class SubcategoriaService {
 
     @Transactional
     public Subcategoria salvarSubECategoria(Subcategoria subcategoria){
-        Categoria categoria = categoriaService.salvar(subcategoria.getCategoria());
+        Long categoriaId = subcategoria.getCategoria().getId();
+        Categoria categoria;
+        if(categoriaId == null){
+            categoria = categoriaService.salvar(subcategoria.getCategoria());
+        }else{
+            categoria = categoriaService.buscaPorId(categoriaId);
+        }
 
         subcategoria.setCategoria(categoria);
 

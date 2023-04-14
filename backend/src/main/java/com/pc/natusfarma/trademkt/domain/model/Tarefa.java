@@ -3,8 +3,7 @@ package com.pc.natusfarma.trademkt.domain.model;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,17 +21,15 @@ public class Tarefa {
     @Column(name = "tarefa_titulo")
     private String titulo;
     @Column(name = "tarefa_dataTarefa")
-    private OffsetDateTime dataTarefa;
+    private LocalDate dataTarefa;
     @Column(name = "tarefa_horalimite")
-    private OffsetTime horaLimite;
+    private LocalTime horaLimite;
     @CreationTimestamp
     @Column(name = "tarefa_datacadastro", nullable = false, columnDefinition = "datetime")
-    private OffsetDateTime dataCadastro;
-
+    private LocalDateTime dataCadastro;
     @ManyToOne
     @JoinColumn(name = "subcategoria_id", nullable = false)
     private Subcategoria subcategoria;
-
     @ManyToMany
     @JoinTable(name = "tarefa_anexo",
             joinColumns = @JoinColumn(name = "tarefa_id") ,
@@ -63,27 +60,27 @@ public class Tarefa {
         this.titulo = titulo;
     }
 
-    public OffsetDateTime getDataTarefa() {
+    public LocalDate getDataTarefa() {
         return dataTarefa;
     }
 
-    public void setDataTarefa(OffsetDateTime dataTarefa) {
+    public void setDataTarefa(LocalDate dataTarefa) {
         this.dataTarefa = dataTarefa;
     }
 
-    public OffsetTime getHoraLimite() {
+    public LocalTime getHoraLimite() {
         return horaLimite;
     }
 
-    public void setHoraLimite(OffsetTime horaLimite) {
+    public void setHoraLimite(LocalTime horaLimite) {
         this.horaLimite = horaLimite;
     }
 
-    public OffsetDateTime getDataCadastro() {
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(OffsetDateTime dataCadastro) {
+    public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 
@@ -102,8 +99,6 @@ public class Tarefa {
     public void setAnexos(List<Anexo> anexos) {
         this.anexos = anexos;
     }
-
-
 
     @Override
     public String toString() {

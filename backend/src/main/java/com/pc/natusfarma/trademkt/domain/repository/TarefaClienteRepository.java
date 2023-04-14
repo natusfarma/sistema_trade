@@ -12,6 +12,8 @@ public interface TarefaClienteRepository extends JpaRepository<TarefaCliente, Lo
 
     Optional<TarefaCliente> findByTarefaIdAndClienteId(Long tarefaId, Long clienteId);
 
+    List<TarefaCliente> findByClienteId(Long clienteId);
+
     List<TarefaCliente> findByTarefaId(Long tarefaId);
 
 }

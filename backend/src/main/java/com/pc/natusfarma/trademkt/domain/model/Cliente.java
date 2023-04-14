@@ -3,6 +3,7 @@ package com.pc.natusfarma.trademkt.domain.model;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class Cliente {
 
     @CreationTimestamp
     @Column(name = "cliente_datacadastro", nullable = false  ,columnDefinition = "datetime")
-    private OffsetDateTime dataCadastro;
+    private LocalDateTime dataCadastro;
     @ManyToOne
     @JoinColumn(name = "perfil_id",nullable = true)
     private Perfil perfil;
@@ -78,11 +79,11 @@ public class Cliente {
         this.email = email;
     }
 
-    public OffsetDateTime getDataCadastro() {
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(OffsetDateTime dataCadastro) {
+    public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 
